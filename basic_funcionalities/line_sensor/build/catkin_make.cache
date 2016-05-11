@@ -1,2 +1,0 @@
-
--DCATKIN_DEVEL_PREFIX=/home/ahlab/AirTurtle/basic_funcionalities/line_sensor/devel -DCMAKE_INSTALL_PREFIX=/home/ahlab/AirTurtle/basic_funcionalities/line_sensor/install -G Unix Makefiles

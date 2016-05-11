@@ -1,0 +1,2 @@
+
+-DCATKIN_DEVEL_PREFIX=/home/ahlab/AirTurtle/basic_funcionalities/feedback/devel -DCMAKE_INSTALL_PREFIX=/home/ahlab/AirTurtle/basic_funcionalities/feedback/install -G Unix Makefiles

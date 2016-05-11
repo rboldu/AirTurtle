@@ -1,7 +1,0 @@
-/home/ahlab/AirTurtle/basic_funcionalities/feedback/build/CMakeFiles/clean_test_results.dir
-/home/ahlab/AirTurtle/basic_funcionalities/feedback/build/CMakeFiles/download_extra_data.dir
-/home/ahlab/AirTurtle/basic_funcionalities/feedback/build/CMakeFiles/doxygen.dir
-/home/ahlab/AirTurtle/basic_funcionalities/feedback/build/gtest/CMakeFiles/gtest.dir
-/home/ahlab/AirTurtle/basic_funcionalities/feedback/build/gtest/CMakeFiles/gtest_main.dir
-/home/ahlab/AirTurtle/basic_funcionalities/feedback/build/CMakeFiles/run_tests.dir
-/home/ahlab/AirTurtle/basic_funcionalities/feedback/build/CMakeFiles/tests.dir

@@ -1,0 +1,2 @@
+camera_module
+-DCATKIN_DEVEL_PREFIX=/home/ahlab/AirTurtle/basic_functionalities/camera_module/devel -DCMAKE_INSTALL_PREFIX=/home/ahlab/AirTurtle/basic_functionalities/camera_module/install -G Unix Makefiles

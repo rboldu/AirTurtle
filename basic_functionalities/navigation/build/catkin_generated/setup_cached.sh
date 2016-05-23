@@ -7,7 +7,8 @@
 # new environment variables
 
 # modified environment variables
-export CMAKE_PREFIX_PATH="/home/ahlab/AirTurtle/basic_functionalities/navigation/devel:$CMAKE_PREFIX_PATH"
+export CPATH="/home/ahlab/AirTurtle/basic_functionalities/camera_module/devel/include:/opt/ros/indigo/include"
+export LD_LIBRARY_PATH="/home/ahlab/AirTurtle/basic_functionalities/camera_module/devel/lib:/opt/ros/indigo/lib:/opt/ros/indigo/lib/python2.7/dist-packages:/opt/ros/indigo/lib/python2.7/dist-packages:/opt/ros/indigo/lib/python2.7/dist-packages"
+export PKG_CONFIG_PATH="/home/ahlab/AirTurtle/basic_functionalities/camera_module/devel/lib/pkgconfig:/opt/ros/indigo/lib/pkgconfig"
 export PWD="/home/ahlab/AirTurtle/basic_functionalities/navigation/build"
-export ROSLISP_PACKAGE_DIRECTORIES="/home/ahlab/AirTurtle/basic_functionalities/navigation/devel/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
-export ROS_PACKAGE_PATH="/home/ahlab/AirTurtle/basic_functionalities/navigation/src:$ROS_PACKAGE_PATH"
+export PYTHONPATH="/home/ahlab/AirTurtle/basic_functionalities/camera_module/devel/lib/python2.7/dist-packages:/opt/ros/indigo/lib/python2.7/dist-packages"

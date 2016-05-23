@@ -7,14 +7,14 @@ import struct
 
 
 class sensor_raw_data(genpy.Message):
-  _md5sum = "f80e0dc5f527e8deac131616f6c00d42"
+  _md5sum = "d206a64c7d7498ae43986f17623d9c0b"
   _type = "navigation/sensor_raw_data"
   _has_header = False #flag to mark the presence of a Header object
-  _full_text = """uint8 averagePosition
+  _full_text = """int8 averagePosition
 
 """
   __slots__ = ['averagePosition']
-  _slot_types = ['uint8']
+  _slot_types = ['int8']
 
   def __init__(self, *args, **kwds):
     """
@@ -50,7 +50,7 @@ class sensor_raw_data(genpy.Message):
     :param buff: buffer, ``StringIO``
     """
     try:
-      buff.write(_struct_B.pack(self.averagePosition))
+      buff.write(_struct_b.pack(self.averagePosition))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -63,7 +63,7 @@ class sensor_raw_data(genpy.Message):
       end = 0
       start = end
       end += 1
-      (self.averagePosition,) = _struct_B.unpack(str[start:end])
+      (self.averagePosition,) = _struct_b.unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -76,7 +76,7 @@ class sensor_raw_data(genpy.Message):
     :param numpy: numpy python module
     """
     try:
-      buff.write(_struct_B.pack(self.averagePosition))
+      buff.write(_struct_b.pack(self.averagePosition))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -90,10 +90,10 @@ class sensor_raw_data(genpy.Message):
       end = 0
       start = end
       end += 1
-      (self.averagePosition,) = _struct_B.unpack(str[start:end])
+      (self.averagePosition,) = _struct_b.unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
 
 _struct_I = genpy.struct_I
-_struct_B = struct.Struct("<B")
+_struct_b = struct.Struct("<b")

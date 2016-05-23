@@ -33,7 +33,7 @@ struct sensor_raw_data_
 
 
 
-   typedef uint8_t _averagePosition_type;
+   typedef int8_t _averagePosition_type;
   _averagePosition_type averagePosition;
 
 
@@ -113,12 +113,12 @@ struct MD5Sum< ::navigation::sensor_raw_data_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "f80e0dc5f527e8deac131616f6c00d42";
+    return "d206a64c7d7498ae43986f17623d9c0b";
   }
 
   static const char* value(const ::navigation::sensor_raw_data_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0xf80e0dc5f527e8deULL;
-  static const uint64_t static_value2 = 0xac131616f6c00d42ULL;
+  static const uint64_t static_value1 = 0xd206a64c7d7498aeULL;
+  static const uint64_t static_value2 = 0x43986f17623d9c0bULL;
 };
 
 template<class ContainerAllocator>
@@ -137,7 +137,7 @@ struct Definition< ::navigation::sensor_raw_data_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "uint8 averagePosition\n\
+    return "int8 averagePosition\n\
 \n\
 ";
   }
@@ -177,7 +177,7 @@ struct Printer< ::navigation::sensor_raw_data_<ContainerAllocator> >
   template<typename Stream> static void stream(Stream& s, const std::string& indent, const ::navigation::sensor_raw_data_<ContainerAllocator>& v)
   {
     s << indent << "averagePosition: ";
-    Printer<uint8_t>::stream(s, indent + "  ", v.averagePosition);
+    Printer<int8_t>::stream(s, indent + "  ", v.averagePosition);
   }
 };
 

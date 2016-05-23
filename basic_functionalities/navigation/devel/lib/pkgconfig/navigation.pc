@@ -1,0 +1,8 @@
+prefix=/home/ahlab/AirTurtle/basic_functionalities/navigation/devel
+
+Name: navigation
+Description: Description of navigation
+Version: 0.6.1
+Cflags: -I/home/ahlab/AirTurtle/basic_functionalities/navigation/devel/include
+Libs: -L/home/ahlab/AirTurtle/basic_functionalities/navigation/devel/lib 
+Requires: message_runtime std_msgs actionlib_msgs

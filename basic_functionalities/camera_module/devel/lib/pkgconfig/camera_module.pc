@@ -1,8 +1,0 @@
-prefix=/home/ahlab/AirTurtle/basic_functionalities/camera_module/devel
-
-Name: camera_module
-Description: Description of camera_module
-Version: 0.6.1
-Cflags: -I/home/ahlab/AirTurtle/basic_functionalities/camera_module/devel/include
-Libs: -L/home/ahlab/AirTurtle/basic_functionalities/camera_module/devel/lib 
-Requires: message_runtime std_msgs actionlib_msgs

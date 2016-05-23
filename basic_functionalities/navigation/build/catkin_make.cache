@@ -1,2 +1,0 @@
-navigation
--DCATKIN_DEVEL_PREFIX=/home/ahlab/AirTurtle/basic_functionalities/navigation/devel -DCMAKE_INSTALL_PREFIX=/home/ahlab/AirTurtle/basic_functionalities/navigation/install -G Unix Makefiles

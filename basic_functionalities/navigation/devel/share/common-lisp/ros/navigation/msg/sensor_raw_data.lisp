@@ -28,11 +28,15 @@
   (averagePosition m))
 (cl:defmethod roslisp-msg-protocol:serialize ((msg <sensor_raw_data>) ostream)
   "Serializes a message object of type '<sensor_raw_data>"
-  (cl:write-byte (cl:ldb (cl:byte 8 0) (cl:slot-value msg 'averagePosition)) ostream)
+  (cl:let* ((signed (cl:slot-value msg 'averagePosition)) (unsigned (cl:if (cl:< signed 0) (cl:+ signed 256) signed)))
+    (cl:write-byte (cl:ldb (cl:byte 8 0) unsigned) ostream)
+    )
 )
 (cl:defmethod roslisp-msg-protocol:deserialize ((msg <sensor_raw_data>) istream)
   "Deserializes a message object of type '<sensor_raw_data>"
-    (cl:setf (cl:ldb (cl:byte 8 0) (cl:slot-value msg 'averagePosition)) (cl:read-byte istream))
+    (cl:let ((unsigned 0))
+      (cl:setf (cl:ldb (cl:byte 8 0) unsigned) (cl:read-byte istream))
+      (cl:setf (cl:slot-value msg 'averagePosition) (cl:if (cl:< unsigned 128) unsigned (cl:- unsigned 256))))
   msg
 )
 (cl:defmethod roslisp-msg-protocol:ros-datatype ((msg (cl:eql '<sensor_raw_data>)))
@@ -43,16 +47,16 @@
   "navigation/sensor_raw_data")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql '<sensor_raw_data>)))
   "Returns md5sum for a message object of type '<sensor_raw_data>"
-  "f80e0dc5f527e8deac131616f6c00d42")
+  "d206a64c7d7498ae43986f17623d9c0b")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql 'sensor_raw_data)))
   "Returns md5sum for a message object of type 'sensor_raw_data"
-  "f80e0dc5f527e8deac131616f6c00d42")
+  "d206a64c7d7498ae43986f17623d9c0b")
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql '<sensor_raw_data>)))
   "Returns full string definition for message of type '<sensor_raw_data>"
-  (cl:format cl:nil "uint8 averagePosition~%~%~%~%"))
+  (cl:format cl:nil "int8 averagePosition~%~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql 'sensor_raw_data)))
   "Returns full string definition for message of type 'sensor_raw_data"
-  (cl:format cl:nil "uint8 averagePosition~%~%~%~%"))
+  (cl:format cl:nil "int8 averagePosition~%~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:serialization-length ((msg <sensor_raw_data>))
   (cl:+ 0
      1

@@ -113,10 +113,7 @@ if ! shopt -oq posix; then
   fi
 fi
 source /opt/ros/indigo/setup.bash
-source ~/AirTurtle/basic_functionalities/camera_module/devel/setup.sh
-source ~/AirTurtle/basic_functionalities/navigation/devel/setup.sh
-# here you have to place your computer IP export 
-#ROS_IP=10.0.38.104
-#This is the robot IP
+source ~/Airturtle/devel/setup.sh
+#export ROS_IP=10.0.38.104
 #export ROS_MASTER_URI='http://10.0.38.101:11311'
 

@@ -1,2 +1,2 @@
-uint8 averagePosition
+int8 averagePosition
 

@@ -4,6 +4,7 @@ find_package(catkin REQUIRED COMPONENTS std_msgs actionlib_msgs message_generati
 
 add_message_files(DIRECTORY msg
                       FILES sensor_raw_data.msg
+                      navigationAutonomusEnable.msg
                  )
 
 

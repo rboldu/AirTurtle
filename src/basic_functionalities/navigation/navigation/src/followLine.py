@@ -9,7 +9,8 @@ import sys
 import select
 
 from geometry_msgs.msg import Twist
-from navigation.msg import sensor_raw_data
+from navigation.msg import sensor_raw_data, navigationAutonomusEnable
+
 
 MAXMETERS=2 # this is the maximum numer of meters that can move the robot forward
 MAXTIME=15 # numer maxim of time that the robot can be going forward
@@ -89,6 +90,15 @@ class navigation_followLine():
     def __init__(self):
         rospy.loginfo("Initializing line follower")
         self.nav_pub= rospy.Publisher('/cmd_vel_mux/input/navi', Twist)
+        self.lineSensor_subs = rospy.Subscriber("navigation/enableAutonomus",navigationAutonomusEnable, self.enable)
+        self.followingLineActive=False
+
+    def enable(self,data):
+        if data.Enable==False and self.followingLineActive == False:
+            self.pub_stop()
+        self.followingLineActive=data.Enable
+
+
 
     def pub_move(self):
         msg=Twist()
@@ -115,9 +125,12 @@ class navigation_followLine():
         line=lineSensorFollow()
         pidFollow=pid(Kp=0.0009,Ki=0.0005,Kd=0.0005,iteration_time=3)
         while not rospy.is_shutdown():
-            msg=pidFollow.calculateOutput(line.average)
-            self.nav_pub.publish(msg)
-
+            if self.followingLineActive :
+                msg=pidFollow.calculateOutput(line.average)
+                self.nav_pub.publish(msg)
+            else:
+                #print "not runing"
+                rospy.sleep(0.3)
 
 
             rospy.sleep(0.3)

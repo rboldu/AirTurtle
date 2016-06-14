@@ -72,7 +72,7 @@ class lineSensorFollow():
     def __init__(self):
         self.average=0
         self.time=0
-        self.lineSensor_subs = rospy.Subscriber("navigation/sensor/line_possition", sensor_raw_data, self.updateValue)
+        self.lineSensor_subs = rospy.Subscriber("navigation/sensor/line_possition", sensor_raw_data, self.updateValue, queue_size=1)
 
     def print_line(self):
         print self.average
@@ -80,7 +80,8 @@ class lineSensorFollow():
     def updateValue(self,data):
         self.average=data.averagePosition
         self.time=rospy.get_rostime()
-        self.print_line()
+        #self.print_line()
+
     def gedAverage(self):
         return self.Sensor.average
 

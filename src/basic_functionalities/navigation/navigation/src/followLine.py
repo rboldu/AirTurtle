@@ -23,9 +23,10 @@ ENDC = '\033[0m'
 FAIL = '\033[91m'
 OKGREEN = '\033[92m'
 
-MAX_SPEED=0.05
+MAX_SPEED=0.1
+MAX_SPEED_TURN=1
 DESIRED_VALUE_SENSOR=0
-SPEED_DEPENDENCE=0.3
+SPEED_DEPENDENCE=0.07
 
 '''
 @this is a navigation state
@@ -33,10 +34,10 @@ SPEED_DEPENDENCE=0.3
 @/cmd_velux/input/navi
 '''
 class pid():
-    def __init__(self,Kp=1,Ki=2,Kd=3,iteration_time=0.5):
+    def __init__(self,Kp=1,Ki=2,Kd=3,iteration_time=0.1):
         self.error=0
         self.error_prior=0
-        self.integral=0
+        self.integral=0.0
         self.Kp=Kp
         self.Ki=Ki
         self.Kd=Kd
@@ -46,8 +47,12 @@ class pid():
     def calculateOutput(self,linePosition):
      
         error=DESIRED_VALUE_SENSOR-linePosition
-        self.intergal=self.integral+(error*self.iteration_time)
-        self.derivative=(error - self.error_prior)/self.iteration_time
+        print "error "+str(error)
+        aux=error*self.iteration_time
+        self.integral=0#self.integral+aux
+        print "integrative: "+ str(self.integral)
+        self.derivative=(error + self.error_prior)/self.iteration_time
+        print "derivative: "+ str(self.derivative)
         output=self.Kp*error+self.Ki*self.integral+self.Kd*self.derivative
         self.error_prior=error
 
@@ -55,6 +60,16 @@ class pid():
         speed=MAX_SPEED-abs(output)*SPEED_DEPENDENCE
         if speed <0 :
             speed=0
+
+        if abs(output)>MAX_SPEED_TURN:
+            print "too fast: "+str(output)
+            if output>0:
+                output=MAX_SPEED_TURN
+            else:
+                output=-MAX_SPEED_TURN
+            
+            speed=0
+            
         msg.linear.x= speed
         msg.linear.y=0
         msg.linear.z=0
@@ -92,7 +107,7 @@ class navigation_followLine():
         rospy.loginfo("Initializing line follower")
         self.nav_pub= rospy.Publisher('/cmd_vel_mux/input/navi', Twist)
         self.lineSensor_subs = rospy.Subscriber("navigation/enableAutonomus",navigationAutonomusEnable, self.enable)
-        self.followingLineActive=False
+        self.followingLineActive=True
 
     def enable(self,data):
         if data.Enable==False and self.followingLineActive == False:
@@ -124,7 +139,7 @@ class navigation_followLine():
        
     def run(self):
         line=lineSensorFollow()
-        pidFollow=pid(Kp=0.0009,Ki=0.0005,Kd=0.0005,iteration_time=3)
+        pidFollow=pid(Kp=0.0003,Ki=0.00005,Kd=0.004,iteration_time=1)
         while not rospy.is_shutdown():
             if self.followingLineActive :
                 msg=pidFollow.calculateOutput(line.average)

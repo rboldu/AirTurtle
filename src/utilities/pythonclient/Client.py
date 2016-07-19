@@ -81,6 +81,7 @@ class kyanite_ComServer():
 			msg.data=int(aux["data"]['x'])
 			#print "camera should go here "+str(msg.data)
 			self.cameraPosition_pub.publish(msg)
+			print "camera"
 		#print('on_ops_response', args)
     
 

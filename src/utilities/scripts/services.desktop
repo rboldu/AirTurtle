@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Terminal=true
+Name=Kyanite-Services
+Icon=utilities-terminal
+Exec=gnome-terminal -e "bash -c '~/AirTurtle/src/utilities/scripts/kyaneteServices.sh;$SHELL'"
+Categories=Application;

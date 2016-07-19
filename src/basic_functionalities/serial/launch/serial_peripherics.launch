@@ -2,9 +2,9 @@
 	<node pkg="rosserial_python" type="serial_node.py" name="serial_node_camera">
 	<param name="port" value="/dev/ttyACM0"/>
 	</node>
-	<node pkg="rosserial_python" type="serial_node.py" name="serial_Navigation_sensor">
+	<node pkg="rosserial_python" type="serial_node.py" name="serial_navigation_sensor">
 	<param name="port" value="/dev/ttyACM1"/>
 	</node>
-	<node pkg="kyaniteclient" type="client.py" name="kyaniteconnection">
-	</node>
+
+	
 </launch>

@@ -178,9 +178,9 @@ class navigation_followLine():
     
     def __init__(self):
         rospy.loginfo("Initializing line follower")
-        self.nav_pub= rospy.Publisher('/cmd_vel_mux/input/navi', Twist)
+        self.nav_pub= rospy.Publisher('/cmd_vel_mux/input/navi', Twist,queue_size=1)
         self.lineSensor_subs = rospy.Subscriber("navigation/enableAutonomus",navigationAutonomusEnable, self.enable)
-        self.followingLineActive=True
+        self.followingLineActive=False
 
     def enable(self,data):
         if data.Enable==False and self.followingLineActive == False:

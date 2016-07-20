@@ -2,5 +2,6 @@
 Type=Application
 Terminal=false
 Name=Stop-Kyanite-Camera
-Exec=gnome-terminal -e "bash -c '~/AirTurtle/src/utilities/scripts/stopkyaniteCamera.sh;$SHELL'"
+Exec=gnome-terminal -e "bash -c '~/AirTurtle/src/utilities/scripts/stopkyaniteCamera.sh;'"
 Categories=Application;
+Icon=/home/kyanite/AirTurtle/src/utilities/exe/images/cameraoff.png

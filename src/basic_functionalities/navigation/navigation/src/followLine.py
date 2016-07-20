@@ -183,7 +183,7 @@ class navigation_followLine():
         self.followingLineActive=False
 
     def enable(self,data):
-        if data.Enable==False and self.followingLineActive == False:
+        if data.Enable==False or self.followingLineActive == False:
             self.pub_stop()
         self.followingLineActive=data.Enable
 

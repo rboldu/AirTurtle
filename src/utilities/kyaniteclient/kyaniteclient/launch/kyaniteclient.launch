@@ -1,0 +1,5 @@
+<launch>
+	<node pkg="kyaniteclient" type="client.py" name="clientkyanite">
+	</node>
+	
+</launch>

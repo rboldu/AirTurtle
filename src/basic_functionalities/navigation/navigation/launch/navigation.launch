@@ -1,0 +1,5 @@
+<launch>
+	<node pkg="navigation" type="followLine.py" name="navigationfollowline">
+	</node>
+
+</launch>

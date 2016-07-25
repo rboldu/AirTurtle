@@ -20,7 +20,7 @@ from KHUBRobotClient import KHUBRobotClient
 _FREQUENCY=1
 
 
-NAME_ROBOT='B'
+NAME_ROBOT='A'
 
 class messageKyanite():
 	def __init__(self,event="position",datax="-1",datay="-1",triggered_at="-1"):

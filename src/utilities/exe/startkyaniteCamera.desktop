@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Terminal=false
+Name=Start-Kyanite-Camera
+Exec=gnome-terminal -e "bash -c '~/AirTurtle/src/utilities/scripts/kyaniteCamera.sh;'"
+Categories=Application;
+Icon=/home/kyanite/AirTurtle/src/utilities/exe/images/camera.png

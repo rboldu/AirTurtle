@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Terminal=false
+Name=Stop-Kyanite
+Exec=gnome-terminal -e "bash -c '~/AirTurtle/src/utilities/scripts/kyaneteStop.sh;'"
+Categories=Application;
+Icon=/home/kyanite/AirTurtle/src/utilities/exe/images/off.png

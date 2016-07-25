@@ -10,6 +10,7 @@ import select
 
 from geometry_msgs.msg import Twist
 from navigation.msg import sensor_raw_data, navigationAutonomusEnable
+from hardcode import *
 
 
 MAXMETERS=2 # this is the maximum numer of meters that can move the robot forward
@@ -46,11 +47,10 @@ class pid():
         self.iteration_time=iteration_time
         self.derivative=0
         self.lost=0
+        self.hardcode=navigationoperations()
 
     def calculatePIDOutput(self,linePosition):
         
-
-
         error=DESIRED_VALUE_SENSOR-linePosition.average
         print "-------------------------------"
         print "proporcional "+str(self.Kp*error)
@@ -99,6 +99,19 @@ class pid():
         print "I am lost"
 
         return msg
+
+    def afterTwisting(self):
+        msg=Twist()
+        msg.linear.x= 0
+        msg.linear.y=0
+        msg.linear.z=0
+        msg.angular.x=0
+        msg.angular.y=0
+        msg.angular.z=0
+
+        print "I am done twisting"
+
+        return msg
     def turn90degreesRigt(self):
 
         msg=Twist()
@@ -139,10 +152,14 @@ class pid():
                 msg=self.calculatePIDOutput(linePosition)
             else:
                 if linePosition.rawData>8:
-                    msg=self.turn90degreesRigt()
+                    hardoce.handleRequest(twist,90)
+                    msg=afterTwisting()
+                    #msg=self.turn90degreesRigt()
                 else:
-                    msg=self.calculatePIDOutput(linePosition)
+                    hardoce.handleRequest(twist,-90)
+                    #msg=self.calculatePIDOutput(linePosition)
                     #msg=self.turn90degreesLeft()
+                    msg=afterTwisting()
         return msg
 
 
@@ -183,8 +200,10 @@ class navigation_followLine():
         self.followingLineActive=False
 
     def enable(self,data):
+
         if data.Enable==False or self.followingLineActive == False:
             self.pub_stop()
+            
         self.followingLineActive=data.Enable
 
 
@@ -215,9 +234,9 @@ class navigation_followLine():
         pidFollow=pid(Kp=0.009,Ki=0.0005,Kd=0.001,iteration_time=1)
         while not rospy.is_shutdown():
             if self.followingLineActive :
-                msg=pidFollow.calcula(line)
+                    msg=pidFollow.calcula(line)
                 #msg=pidFollow.calculateOutput(line)
-                self.nav_pub.publish(msg)
+                    self.nav_pub.publish(msg)
             else:
                 #print "not runing"
                 rospy.sleep(0.3)

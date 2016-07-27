@@ -3,6 +3,10 @@
 @author: Roger Boldu
 '''
 
+# this software runs all the scripts of hardcode moving.
+#it allows to move fordware and twist.
+
+
 import rospy
 import actionlib
 import sys
@@ -39,7 +43,7 @@ class navigationoperations():
         self.nav_in_process=False
         self.meters=0
         self.straigh=True
-        self.instructionCounter=0
+        self.instructionCounter=34
         self.parameters=rospy.get_param('navigation_kobuki')
     def checkOdometry(self,data):
         self.Odometry_now=data
@@ -184,13 +188,19 @@ class navigationoperations():
 
         return msg
 
-    def handleRequest(self,action_input,value_input):
-        
-        if action_input=="forward":
+    def handleRequest(self):
+        self.instructionCounter=self.instructionCounter+1
+        if self.instructionCounter>self.parameters['number'][0]:
+            self.instructionCounter=1
+            print "one loop done"
+        print " sending parameter number :::::: " +str(self.instructionCounter)+" :=== "+str(self.parameters[str(self.instructionCounter)])
+        action=self.parameters[str(self.instructionCounter)][0]
+        value=self.parameters[str(self.instructionCounter)][1]
+        if action=="forward":
         #self.newOrderTurn(90)
-            self.newOrder(value_input)
-        if action_input=="twist":
-            self.newOrderTurn(value_input)
+            self.newOrder(value)
+        if action=="twist":
+            self.newOrderTurn(value)
 
         while self.nav_in_process==True :
             if self.navigationEnable :

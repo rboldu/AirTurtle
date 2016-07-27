@@ -3,6 +3,9 @@
 @author: Roger Boldu
 '''
 
+#this software mixes follow line and hardcode.
+#basically it follows the line and when something big it's find it decide where to twist
+
 import rospy
 import actionlib
 import sys
@@ -10,6 +13,7 @@ import select
 
 from geometry_msgs.msg import Twist
 from navigation.msg import sensor_raw_data, navigationAutonomusEnable
+from hardcode_params import *
 
 
 MAXMETERS=2 # this is the maximum numer of meters that can move the robot forward
@@ -28,13 +32,7 @@ MAX_SPEED_TURN=1
 DESIRED_VALUE_SENSOR=0
 SPEED_DEPENDENCE=0.1
 MAX_SPEED_BACK=0.1
-LOST_NUMBER=50
-RIGHT_SENSITIVIT=5
-LEFT_SENSITIVIT=5
-
-TWIST_TIME=0.7
-
-FACTORERROR=1.5
+LOST_NUMBER=40
 
 '''
 @this is a navigation state
@@ -52,16 +50,11 @@ class pid():
         self.iteration_time=iteration_time
         self.derivative=0
         self.lost=0
-        self.left=0
-        self.right=0
+        self.hardcode=navigationoperations()
 
     def calculatePIDOutput(self,linePosition):
         
-
         error=DESIRED_VALUE_SENSOR-linePosition.average
-        if linePosition.density>2:
-            error=error*FACTORERROR*linePosition.density
-            print "errorrrrrr"
         #print "-------------------------------"
         #print "proporcional "+str(self.Kp*error)
         aux=error*self.iteration_time
@@ -110,20 +103,69 @@ class pid():
 
         return msg
 
+    def afterTwisting(self):
+        msg=Twist()
+        msg.linear.x= 0
+        msg.linear.y=0
+        msg.linear.z=0
+        msg.angular.x=0
+        msg.angular.y=0
+        msg.angular.z=0
+
+        print "I am done twisting"
+
+        return msg
+    def turn90degreesRigt(self):
+
+        msg=Twist()
+        msg.linear.x= 0
+        msg.linear.y=0
+        msg.linear.z=0
+        msg.angular.x=0
+        msg.angular.y=0
+        msg.angular.z=-MAX_SPEED_TURN
+
+        return msg
+    def turn90degreesLeft(self):
+
+        msg=Twist()
+        msg.linear.x= 0
+        msg.linear.y=0
+        msg.linear.z=0
+        msg.angular.x=0
+        msg.angular.y=0
+        msg.angular.z=MAX_SPEED_TURN
+
+        return msg
+    def resetPID(self):
+        self.error_prior=0
+        self.integral=0.0
     def calcula(self,linePosition):
 
         msg=Twist()
         if linePosition.density==0:
             self.lost=self.lost+1
             if self.lost>LOST_NUMBER:
-                print "I am lost"
+                print "lost"
+                #self.hardcode.handleRequest("forward",0.005)
+                self.lost=0
                 msg=self.calculatePIDOutput(linePosition)
                 #msg=self.calculaLost(linePosition)
+
             else:
                 msg=self.calculatePIDOutput(linePosition)
         else:
             self.lost=0
-            msg=self.calculatePIDOutput(linePosition)
+            if linePosition.density<3:
+                msg=self.calculatePIDOutput(linePosition)
+            else:
+                print "density:  " + str(linePosition.density)
+                print "averagePosition:  " + str(linePosition.average)
+                print str(linePosition)
+                self.hardcode.handleRequest()
+                msg=self.afterTwisting()
+                self.resetPID()
+                    
         return msg
 
 
@@ -135,6 +177,7 @@ class lineSensorFollow():
         self.average=0
         self.rawData=0
         self.density=0
+
 
         self.time=0
         self.lineSensor_subs = rospy.Subscriber("navigation/sensor/line_possition", sensor_raw_data, self.updateValue, queue_size=1)
@@ -163,9 +206,13 @@ class navigation_followLine():
         self.followingLineActive=False
 
     def enable(self,data):
+
         if data.Enable==False or self.followingLineActive == False:
             self.pub_stop()
+            
         self.followingLineActive=data.Enable
+
+
 
     def pub_move(self):
         msg=Twist()
@@ -187,38 +234,15 @@ class navigation_followLine():
         msg.angular.z=0.0
 
         self.nav_pub.publish(msg)
-    
-    def turn90degreesRigt(self):
-
-        msg=Twist()
-        msg.linear.x= 0
-        msg.linear.y=0
-        msg.linear.z=0
-        msg.angular.x=0
-        msg.angular.y=0
-        msg.angular.z=-MAX_SPEED_TURN
-
-        return msg
-    def turn90degreesLeft(self):
-
-        msg=Twist()
-        msg.linear.x= 0
-        msg.linear.y=0
-        msg.linear.z=0
-        msg.angular.x=0
-        msg.angular.y=0
-        msg.angular.z=MAX_SPEED_TURN
-
-        return msg
-
+       
     def run(self):
         line=lineSensorFollow()
-        pidFollow=pid(Kp=0.009,Ki=0.0005,Kd=0.001,iteration_time=1)
+        pidFollow=pid(Kp=0.004,Ki=0.0005,Kd=0.001,iteration_time=1)
         while not rospy.is_shutdown():
             if self.followingLineActive :
-                msg=pidFollow.calcula(line)
-
-                self.nav_pub.publish(msg)
+                    msg=pidFollow.calcula(line)
+                #msg=pidFollow.calculateOutput(line)
+                    self.nav_pub.publish(msg)
             else:
                 #print "not runing"
                 rospy.sleep(0.3)

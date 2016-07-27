@@ -45,7 +45,7 @@ class kyanite_ComServer():
 
 	def __init__(self):
 		rospy.loginfo("Initializing Kynate Client")
-		self.roboClient = KHUBRobotClient('S1', '10.21.113.39', 9099)
+		self.roboClient = KHUBRobotClient('S1', '10.21.115.135', 9099)
 		self.roboClient.onInfo(self.on_info_response)
 		self.roboClient.onOps(self.on_ops_response)
 		

@@ -67,26 +67,29 @@ class kyanite_ComServer():
 	def on_ops_response(self,*args):
 		aux=args[0]
 		#print aux["event"]
-		if aux["event"]=="pause_operation":
-			msg=navigationAutonomusEnable()
-			msg.Enable=False
-			self.nav_enable_pub.publish(msg)
-			print "stoping"
-		if aux["event"]=="resume_operation":
-			msg=navigationAutonomusEnable()
-			msg.Enable=True
-			self.nav_enable_pub.publish(msg)
-			print "starting"
+		print "something is happening"
+		print "name==="+ str(aux["data"]["name"])
+		if aux["data"]["name"]== NAME_ROBOT:
+			if aux["event"]=="pause_operation":
+				msg=navigationAutonomusEnable()
+				msg.Enable=False
+				self.nav_enable_pub.publish(msg)
+				print "stoping"
+			if aux["event"]=="resume_operation":
+				msg=navigationAutonomusEnable()
+				msg.Enable=True
+				self.nav_enable_pub.publish(msg)
+				print "starting"
 
-		if aux["event"]=="camera_rotate":
-			msg=UInt16()
-			print(str(aux["data"]['x']))
-			print str(aux)
-			msg.data=int(aux["data"]['x'])
-			#print "camera should go here "+str(msg.data)
-			self.cameraPosition_pub.publish(msg)
-			print "camera"
-		#print('on_ops_response', args)
+			if aux["event"]=="camera_rotate":
+				msg=UInt16()
+				print(str(aux["data"]['x']))
+				print str(aux)
+				msg.data=int(aux["data"]['x'])
+				#print "camera should go here "+str(msg.data)
+				self.cameraPosition_pub.publish(msg)
+				print "camera"
+			#print('on_ops_response', args)
     
 
 	def updateKyanite(self):

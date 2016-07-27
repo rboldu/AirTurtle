@@ -1,16 +1,7 @@
 numberOfSubMaps: 1
 navigation_kobuki:
-    'number': [12]
+    'number': [2]
     '1': [forward, 0.4]
     '2': [twist, -90]
-    '3': [forward, 0.2]
-    '4': [twist, 90]
-    '5': [forward, 0.3]
-    '6': [twist, 90]
-    '7': [forward, 0.3]
-    '8': [twist, 90]
-    '9': [forward, 0.7]
-    '10': [twist, 90]
-    '11': [forward, 0.1]
-    '12': [twist, 90]    
+       
     

@@ -19,8 +19,9 @@ ENDC = '\033[0m'
 FAIL = '\033[91m'
 OKGREEN = '\033[92m'
 
-SPEED_X=0.25
-MARGE=0.01
+SPEED_X=0.40
+MARGE=0.05
+SPEED_X_FORWARD=0.1
 
 '''
 @this is a navigation state
@@ -140,7 +141,7 @@ class navigationoperations():
         
     def pub_move(self):
         msg=Twist()
-        msg.linear.x= SPEED_X
+        msg.linear.x= SPEED_X_FORWARD
         msg.linear.y=0
         msg.linear.z=0
         msg.angular.x=0
@@ -162,7 +163,7 @@ class navigationoperations():
     def pub_twist(self):
 
         msg=Twist()
-        msg.linear.x= 0
+        msg.linear.x= 0.02
         msg.linear.y=0
         msg.linear.z=0
         msg.angular.x=0
@@ -174,7 +175,7 @@ class navigationoperations():
     def turn90degreesLeft(self):
 
         msg=Twist()
-        msg.linear.x= 0
+        msg.linear.x= 0.02
         msg.linear.y=0
         msg.linear.z=0
         msg.angular.x=0
@@ -185,11 +186,11 @@ class navigationoperations():
 
     def handleRequest(self,action_input,value_input):
         
-        if action=="forward":
+        if action_input=="forward":
         #self.newOrderTurn(90)
-            self.newOrder(value)
-        if action=="twist":
-            self.newOrderTurn(value)
+            self.newOrder(value_input)
+        if action_input=="twist":
+            self.newOrderTurn(value_input)
 
         while self.nav_in_process==True :
             if self.navigationEnable :
@@ -201,6 +202,7 @@ class navigationoperations():
             else:
                 rospy.sleep(0.03)
         return True
+
     def run(self):
         while not rospy.is_shutdown():
             if self.navigationEnable :

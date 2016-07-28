@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Terminal=True
+Name=Kyanite_RUN
+Exec=gnome-terminal -e "bash -c '~/AirTurtle/src/utilities/scripts/kyanite.sh;$SHELL'"
+Categories=Application;
+Icon=/home/kyanite/AirTurtle/src/utilities/exe/images/tank.png

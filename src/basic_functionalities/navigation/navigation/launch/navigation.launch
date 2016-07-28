@@ -1,5 +1,5 @@
 <launch>
-	<node pkg="navigation" type="followLine.py" name="navigationfollowline">
+	<node pkg="navigation" type="hardcode_line_params.py" name="navigationfollowline">
 	</node>
-
+	<rosparam file="$(find navigation)/config/trace.yalm" command="load" />
 </launch>

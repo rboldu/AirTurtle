@@ -15,7 +15,7 @@ from navigation.msg import sensor_raw_data, navigationAutonomusEnable
 MAXMETERS=2 # this is the maximum numer of meters that can move the robot forward
 MAXTIME=15 # numer maxim of time that the robot can be going forward
 MINDIST=0.15
-SPEED_X=0.1 # that is a forward speed
+SPEED_X=0.11 # that is a forward speed
 MAXIM_INIT=200 # it'a a initialitzation value, it have to be bigger than ultraSounds Range
 NUM_MOSTRES=3
 
@@ -23,12 +23,12 @@ ENDC = '\033[0m'
 FAIL = '\033[91m'
 OKGREEN = '\033[92m'
 
-MAX_SPEED=0.08
+MAX_SPEED=0.09
 MAX_SPEED_TURN=1
 DESIRED_VALUE_SENSOR=0
-SPEED_DEPENDENCE=0.1
+SPEED_DEPENDENCE=0.05
 MAX_SPEED_BACK=0.1
-LOST_NUMBER=50
+LOST_NUMBER=1
 RIGHT_SENSITIVIT=5
 LEFT_SENSITIVIT=5
 
@@ -55,13 +55,14 @@ class pid():
         self.left=0
         self.right=0
 
+        self.average_calculated=0
+
     def calculatePIDOutput(self,linePosition):
         
-
+        linePosition.average=self.average_calculated
         error=DESIRED_VALUE_SENSOR-linePosition.average
-        if linePosition.density>2:
-            error=error*FACTORERROR*linePosition.density
-            print "errorrrrrr"
+        #    error=error*FACTORERROR*linePosition.density
+        #    print "errorrrrrr"
         #print "-------------------------------"
         #print "proporcional "+str(self.Kp*error)
         aux=error*self.iteration_time
@@ -109,10 +110,50 @@ class pid():
         print "I am lost"
 
         return msg
-
+    def printSensorData(self,linePosition):
+        aux=[0,0,0,0,0,0,0,0]
+        aux2=linePosition.rawData
+        counter=0
+        i=0
+    #aux2=linePosition.rawData.to_bytes(1, byteorder='big', signed=False)
+        if (aux2 & 1):
+            counter=counter+100
+            aux[7]=1
+        if (aux2 & 2):
+            counter=counter+40
+            aux[6]=1
+        if (aux2 & 4):
+            counter=counter+20
+            aux[5]=1
+        if (aux2 & 8):
+            aux[4]=1
+            counter=counter+10
+        if (aux2 & 16):
+            aux[3]=1
+            counter=counter-20
+        if (aux2 & 32):
+            aux[2]=1
+            counter=counter-30
+        if (aux2& 64):
+            aux[1]=1
+            counter=counter-40
+        if (aux2& 128):
+            aux[0]=1
+            counter=counter-100
+        if(aux2 & 1 and aux2 & 1 == 0):
+            print "emergenci"
+            counter=250
+        if(aux2 & 128 and aux2 & 64 == 0):
+            print "emergenci"
+            counter=-250
+        
+        print str(aux)
+        print "counter value=" +str(counter)
+        self.average_calculated=counter
     def calcula(self,linePosition):
 
         msg=Twist()
+        self.printSensorData(linePosition)
         if linePosition.density==0:
             self.lost=self.lost+1
             if self.lost>LOST_NUMBER:
@@ -213,7 +254,8 @@ class navigation_followLine():
 
     def run(self):
         line=lineSensorFollow()
-        pidFollow=pid(Kp=0.009,Ki=0.0005,Kd=0.001,iteration_time=1)
+        #pidFollow=pid(Kp=0.009,Ki=0.0005,Kd=0.001,iteration_time=1)
+        pidFollow=pid(Kp=0.00003,Ki=0.0003,Kd=0.0027,iteration_time=1.2)
         while not rospy.is_shutdown():
             if self.followingLineActive :
                 msg=pidFollow.calcula(line)

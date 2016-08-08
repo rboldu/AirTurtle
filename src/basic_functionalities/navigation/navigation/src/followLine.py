@@ -27,8 +27,8 @@ MAX_SPEED=0.09
 MAX_SPEED_TURN=1
 DESIRED_VALUE_SENSOR=0
 SPEED_DEPENDENCE=0.05
-MAX_SPEED_BACK=0.1
-LOST_NUMBER=1
+MAX_SPEED_BACK=0.05
+LOST_NUMBER=25
 RIGHT_SENSITIVIT=5
 LEFT_SENSITIVIT=5
 
@@ -100,7 +100,7 @@ class pid():
         return msg
     def calculaLost(self,linePosition):
         msg=Twist()
-        msg.linear.x= -MAX_SPEED_BACK
+        msg.linear.x=-MAX_SPEED_BACK
         msg.linear.y=0
         msg.linear.z=0
         msg.angular.x=0
@@ -108,7 +108,7 @@ class pid():
         msg.angular.z=0
 
         print "I am lost"
-
+        self.followingLineActive=False
         return msg
     def printSensorData(self,linePosition):
         aux=[0,0,0,0,0,0,0,0]
@@ -120,23 +120,23 @@ class pid():
             counter=counter+100
             aux[7]=1
         if (aux2 & 2):
-            counter=counter+40
+            counter=counter+60
             aux[6]=1
         if (aux2 & 4):
-            counter=counter+20
+            counter=counter+30
             aux[5]=1
         if (aux2 & 8):
             aux[4]=1
             counter=counter+10
         if (aux2 & 16):
             aux[3]=1
-            counter=counter-20
+            counter=counter-10
         if (aux2 & 32):
             aux[2]=1
             counter=counter-30
         if (aux2& 64):
             aux[1]=1
-            counter=counter-40
+            counter=counter-60
         if (aux2& 128):
             aux[0]=1
             counter=counter-100
@@ -158,8 +158,8 @@ class pid():
             self.lost=self.lost+1
             if self.lost>LOST_NUMBER:
                 print "I am lost"
-                msg=self.calculatePIDOutput(linePosition)
-                #msg=self.calculaLost(linePosition)
+                #msg=self.calculatePIDOutput(linePosition)
+                msg=self.calculaLost(linePosition)
             else:
                 msg=self.calculatePIDOutput(linePosition)
         else:
@@ -255,7 +255,7 @@ class navigation_followLine():
     def run(self):
         line=lineSensorFollow()
         #pidFollow=pid(Kp=0.009,Ki=0.0005,Kd=0.001,iteration_time=1)
-        pidFollow=pid(Kp=0.00003,Ki=0.0003,Kd=0.0027,iteration_time=1.2)
+        pidFollow=pid(Kp=0.000028,Ki=0.0003,Kd=0.0033,iteration_time=1.5)
         while not rospy.is_shutdown():
             if self.followingLineActive :
                 msg=pidFollow.calcula(line)

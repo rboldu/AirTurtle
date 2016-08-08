@@ -10,9 +10,9 @@ echo "------------------------"
 echo "Turning off"
 echo "------------------------"
 #turnng of all the old thinkgs
-bash ~/AirTurtle/src/utilities/scripts/kyaniteStop.sh
 sudo bash ~/AirTurtle/src/utilities/scripts/stopkyaniteCamera.sh
-sleep 2
+bash ~/AirTurtle/src/utilities/scripts/kyaniteStop.sh
+sleep 1
 echo "------------------------"
 echo "All the systems are off"
 echo "------------------------"
@@ -28,13 +28,13 @@ echo "------------------------"
 bash ~/AirTurtle/src/utilities/scripts/kyaniteservices.sh &
 
 
-sleep 30
+sleep 10
 echo "------------------------"
 echo "Inializing connection with the server"
 echo "------------------------"
 bash ~/AirTurtle/src/utilities/scripts/kyaniteclient.sh &
 
-sleep 3
+sleep 1
 echo "------------------------"
 echo "All the services Runing!!"
 echo "------------------------"

@@ -14,11 +14,11 @@ ENDC = '\033[0m'
 FAIL = '\033[91m'
 OKGREEN = '\033[92m'
 
-MAX_SPEED_TURN=10 #degrees per second
-FREQ_MOVING=0.2
+MAX_SPEED_TURN=0.5 #degrees per second
+FREQ_MOVING=0.05
 MAX_TURN=5 # every second
-MAX_POSITION=180
-MIN_POSITION=0
+MAX_POSITION=175
+MIN_POSITION=5
 RESET_POSITION=90
 '''
 @this is a navigation state
@@ -37,10 +37,10 @@ class moveCamera():
     def updateValue(self,data):
     	print "new value!!!!!!"
         self.newPosition=data.data
-        if self.newPosition>180 :
-        	self.newPosition=180
-        if self.newPosition<0:
-        	self.newPosition=0
+        if self.newPosition>MAX_POSITION :
+        	self.newPosition=MAX_POSITION
+        if self.newPosition<MIN_POSITION:
+        	self.newPosition=MIN_POSITION
         #print "new possiiton is:  " + str(self.newPosition)
         msg=UInt16()
         while  (self.position!=self.newPosition):
@@ -63,15 +63,17 @@ class moveCamera():
         	rospy.sleep(FREQ_MOVING)
         	#print "I am sending====== "+ str(msg.data)
         	self.camera_pub.publish(msg)
+        print "done"
 
 
          
     def run(self):
         
         while not rospy.is_shutdown():
-        	if (self.position==self.newPosition):
-        		msg=UInt16()
-        		msg.data=self.position
+        	#if (self.position==self.newPosition):
+        	#	print "loop"
+                #msg=UInt16()
+        		#msg.data=self.position
         		#self.camera_pub.publish(msg)
 
         	rospy.sleep(5)
